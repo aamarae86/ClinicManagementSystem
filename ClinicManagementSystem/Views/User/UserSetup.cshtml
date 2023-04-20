@@ -1,0 +1,101 @@
+﻿
+@{
+    ViewBag.Title = "Agent Setup";
+}
+
+<div class="app-content  my-3 my-md-5">
+    <div class="side-app">
+        <div class="page-header">
+            <h4 class="page-title">Agent Setup</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">User</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Agent Setup</li>
+            </ol>
+        </div>
+        <div class="row">
+            <div class="col-xl-12">
+                <div class="card m-b-20">
+                    <div class="card-header">
+                        <h3 class="card-title">Agent Setup</h3>
+
+                    </div>
+                    <div class="card-body">
+                        <form id="requestForm">
+                            <div class="form-group">
+                                <label class="form-label">First Name</label>
+                                <input type="text" class="form-control" id="FirstName" placeholder="Enter First Name" maxlength="49" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Last Name</label>
+                                <input type="text" class="form-control" id="LastName" placeholder="Enter Last Name" maxlength="49" required />
+                                <input type="hidden" id="hdfID" value="0" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email</label>
+                                <input type="text" class="form-control" id="Email" placeholder="Email" maxlength="50" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Username</label>
+                                <input type="text" class="form-control" id="Username" placeholder="Enter Username" maxlength="49" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Password</label>
+                                <input type="password" class="form-control" id="Password" placeholder="Enter Password" maxlength="49" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Confirm Password</label>
+                                <input type="password" class="form-control" id="ConfirmPassword" placeholder="Enter Password" maxlength="49" required />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Phone Number</label>
+                                <input type="text" class="form-control" id="PhoneNumber" placeholder="Enter Phone No." maxlength="49" />
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Address</label>
+                                <textarea class="form-control" id="Address" placeholder="Enter Address" maxlength="200" required></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status</label>
+                                <input type="checkbox" id="IsActive" />
+                            </div>
+                            <div class="form-group mb-0">
+                                <div class="checkbox checkbox-secondary">
+                                    <button type="submit" class="btn btn-primary ">Save</button>
+                                    &nbsp;
+                                    <a class="btn btn-info pull-right" href="/User/Index"> Back</a>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- end col -->
+        </div>&nbsp;
+        <!-- end row -->
+    </div>
+</div>
+
+<script>
+    $('#requestForm').submit(function (e) {
+        e.preventDefault();
+        if ($(this).valid()) {
+            var user = {
+                FirstName: $('#FirstName').val(),
+                LastName: $('#LastName').val(),
+                Email: $('#Email').val(),
+                Username: $('#Username').val(),
+                Password: $('#Password').val(),
+                ConfirmPassword: $('#ConfirmPassword').val(),
+                PhoneNumber: $('#PhoneNumber').val(),
+                Address: $('#Address').val(),
+                IsActive: $('#IsActive').is(':checked')
+            };
+            Post("/User/RegisterUser", { model: user }).then(function (d) {
+                if (d.Success) {
+                    RedirectDelay("/User/Index");
+                }
+                ShowMessage(d);
+            });
+        }
+    });
+</script>

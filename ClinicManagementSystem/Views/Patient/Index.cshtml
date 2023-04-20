@@ -1,0 +1,132 @@
+﻿
+@{
+    ViewBag.Title = "Manage Patients";
+}
+
+<div class="app-content  my-3 my-md-5">
+    <div class="side-app">
+        <div class="page-header">
+            <h4 class="page-title">Patients List</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Patient</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Patients List</li>
+            </ol>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                @if (!string.IsNullOrEmpty(Convert.ToString(TempData["Message"])))
+                                {
+                                    if (Convert.ToString(TempData["Message"]).StartsWith("Success"))
+                                    {
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" id="alertMessage">
+                                            <strong>@(Convert.ToString(TempData["Message"]))</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alertMessage">
+                                            <strong>@(Convert.ToString(TempData["Message"]))</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <select id="ddlStatus" class="form-control select" onchange="BindGrid()">
+                                    <option value="">All Statuses</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-4">
+                                <input type="text" id="txtSearch" placeholder="Search" class="form-control" value="" onchange="BindGrid()" />
+                            </div>
+                            <div class="col-sm-4">
+                                <button class="btn btn-primary pull-right" id="btnAddNew"><i class="fa fa-plus fa-fw"></i> Add New</button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table id="dataTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>First Name</th>
+                                        <th>Last Name</th>
+                                        <th>Email</th>
+                                        @*<th>Timing</th>*@
+                                        @*<th>Status</th>*@
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    BindGrid();
+
+    $("#alertMessage").fadeTo(2000, 500).slideUp(500, function () {
+        $("#alertMessage").slideUp(500);
+    });
+
+    $(document).on("click", "#btnAddNew", function () {
+        location.href = "/Patient/Create";
+    });
+
+    $(document).on("click", "#btnEdit", function () {
+        var specId = $(this).attr("data-id");
+        location.href = "/Patient/Create/" + specId;
+    });
+
+    function BindGrid() {
+        var RequestSearch = { Status: $('#ddlStatus option:selected').val(), Search: $("#txtSearch").val() };
+        $("#dataTable").advancedDataTable({
+            url: "/Patient/Fetch",
+            postData: RequestSearch,
+            bindingData: [
+                {
+                    "render": function (data, type, row) {
+                        return "<img alt='profile-img' class='avatar avatar-md brround' src='/Assets/images/ProfilePicture/" + row.Photo + "' />";
+                    },
+                },
+                { "data": "FirstName" },
+                { "data": "LastName" },
+                { "data": "Email" },
+                //{ "data": "Timing" },
+                //{
+                //    "render": function (data, type, row) {
+                //        return Label(row.IsActive);
+                //    },
+                //},
+                {
+                    "render": function (data, type, row) {
+                        return '<button title="Edit" class="btn btn-sm btn-info" id="btnEdit" data-id="' + row.Id + '"><i class="fa fa-pencil"></i</button>';
+                    },
+                    "orderable": false
+                }
+            ],
+        });
+    }
+</script>
+

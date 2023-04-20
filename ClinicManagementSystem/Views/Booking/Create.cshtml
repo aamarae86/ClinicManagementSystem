@@ -1,0 +1,207 @@
+﻿@model DAL.Booking
+@{
+    ViewBag.Title = "Create";
+}
+
+@using (Html.BeginForm("Create", "Booking", FormMethod.Post, new { @id = "frmDisease", @enctype = "multipart/form-data" }))
+{
+    <div class="app-content  my-3 my-md-5">
+        <div class="side-app">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.HiddenFor(s => s.Id)
+                            @Html.HiddenFor(s => s.PatientId, new { @id = "hdfPatientID" })
+                            @if (!User.IsInRole("Patient"))
+                            {
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Patient By Name</label>
+                                            @Html.TextBoxFor(s => s.PatientName, new { @class = "form-control txtName", @id = "txtName" })
+                                            @*@Html.DropDownListFor(m => m.PatientId, new SelectList(Model.lstPatient, "ID", "Name"), "Please select", new { @class = "form-control" })*@
+                                            @Html.ValidationMessageFor(s => s.PatientName, null, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Patient By User Name</label>
+                                            @Html.TextBoxFor(s => s.PatientUserName, new { @class = "form-control txtUserName", @id = "txtUserName" })
+                                            @*@Html.DropDownListFor(m => m.PatientId, new SelectList(Model.lstPatient, "ID", "Name"), "Please select", new { @class = "form-control" })*@
+                                            @Html.ValidationMessageFor(s => s.PatientUserName, null, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                            }
+                            else
+                            {
+                                @Html.HiddenFor(s => s.PatientName)
+                                @Html.HiddenFor(s => s.PatientUserName)
+                            }
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Disease</label>
+                                        @Html.DropDownListFor(m => m.DiseaseId, new SelectList(Model.lstDisease, "ID", "Name"), "Please select", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.DiseaseId, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Booking Date</label>
+                                        @Html.TextBoxFor(s => s.BookingDate, "{0:MM/dd/yyyy}", new { @class = "form-control datepicker" })
+                                        @Html.ValidationMessageFor(s => s.BookingDate, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Booking Time</label>
+                                        <div class="clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+                                            @Html.TextBoxFor(s => s.BookingTime, new { @class = "form-control" })
+                                        </div>
+                                        @Html.ValidationMessageFor(s => s.BookingTime, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            @if (Model.Id > 0 && !User.IsInRole("Patient"))
+                            {
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Assign Nurse</label>
+                                            @Html.DropDownListFor(m => m.NurseId, new SelectList(Model.lstNurse, "ID", "Name"), "Please select", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Assign Doctor</label>
+                                            @Html.DropDownListFor(m => m.DoctorId, new SelectList(Model.lstDoctor, "ID", "Name"), "Please select", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Booking Status</label>
+                                            @Html.DropDownListFor(m => m.BookingStatus, new SelectList(Model.lstStatus, "Name", "Name"), "Please select", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @if (Model.Id > 0)
+                                        {
+                                            <input type="submit" name="name" value="Update" class="btn btn-primary" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" name="name" value="Save" class="btn btn-primary" />
+                                        }
+                                        <a href="/Booking/Index" class="btn btn-dark">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        $(function () {
+            $('.txtName').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Booking/GetPatientByName",
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    val: item.Code,
+                                    Id: item.Id
+                                }
+                            }))
+
+                        },
+                        error: function (response) {
+                            // alert(response.responseText);
+                        },
+                        failure: function (response) {
+                            //  alert(response.responseText);
+                        }
+                    });
+                },
+
+                change: function (event, ui) {
+                    if (ui.item == null || ui.item == undefined) {
+                        $('#hdfPatientID').val("");
+                    }
+                },
+
+                select: function (e, i) {
+                    $('#txtUserName').val(i.item.val);
+                    $('#txtName').val(i.item.label);
+                    $('#hdfPatientID').val(i.item.Id);
+                },
+                minLength: 1
+            });
+
+            $('.txtUserName').autocomplete({
+                source: function (request, response) {
+                    $.ajax({
+                        url: "/Booking/GetPatientByUserName",
+                        data: "{ 'prefix': '" + request.term + "'}",
+                        dataType: "json",
+                        type: "POST",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            response($.map(data, function (item) {
+                                return {
+                                    label: item.Name,
+                                    val: item.Code,
+                                    Id: item.Id
+                                }
+                            }))
+
+                        },
+                        error: function (response) {
+                        },
+                        failure: function (response) {
+                        }
+                    });
+                },
+
+                change: function (event, ui) {
+                    if (ui.item == null || ui.item == undefined) {
+                        $('#hdfPatientID').val("");
+
+                    }
+                },
+
+                select: function (e, i) {
+                    $('#txtUserName').val(i.item.val);
+                    $('#txtName').val(i.item.label);
+                    $('#hdfPatientID').val(i.item.Id);
+                },
+                minLength: 1
+            });
+        });
+    </script>
+}
+
+
+

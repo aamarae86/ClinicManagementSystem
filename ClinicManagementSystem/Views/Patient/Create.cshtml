@@ -1,0 +1,223 @@
+﻿@model DAL.AspNetUser
+@{
+    ViewBag.Title = "Add Patient";
+}
+<style>
+    .showNone {
+        display: none;
+    }
+</style>
+@using (Html.BeginForm("Create", "Patient", FormMethod.Post, new { @id = "frmDisease", @enctype = "multipart/form-data" }))
+{
+    <div class="app-content  my-3 my-md-5">
+        <div class="side-app">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.HiddenFor(s => s.Id)
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">First Name</label>
+                                        @Html.TextBoxFor(s => s.FirstName, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.FirstName, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Last Name</label>
+                                        @Html.TextBoxFor(s => s.LastName, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.LastName, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Address</label>
+                                        @Html.TextAreaFor(s => s.Address, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Address, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                @*<div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Qualification</label>
+                                        @Html.TextAreaFor(s => s.Qualification, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Qualification, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>*@
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Gender</label>
+                                        @Html.DropDownListFor(m => m.Gender, new SelectList(Model.lstGender, "Name", "Name"), "Please select", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Gender, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Date Of Birth</label>
+                                        @Html.TextBoxFor(s => s.DateOfBirth, new { @class = "form-control datepicker" })
+                                        @Html.ValidationMessageFor(s => s.DateOfBirth, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Email</label>
+                                        @if (Model.Id > 0)
+                                        {
+                                            @Html.TextBoxFor(s => s.Email, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(s => s.Email, new { @class = "form-control" })
+                                        }
+                                        @Html.ValidationMessageFor(s => s.Email, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Username</label>
+                                        @if (Model.Id > 0)
+                                        {
+                                            @Html.TextBoxFor(s => s.UserName, new { @class = "form-control", @readonly = "readonly" })
+                                        }
+                                        else
+                                        {
+                                            @Html.TextBoxFor(s => s.UserName, new { @class = "form-control" })
+                                        }
+                                        @Html.ValidationMessageFor(s => s.UserName, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            @if (Model.Id > 0)
+                            {
+                                @Html.HiddenFor(s => s.Password)
+                                @Html.HiddenFor(s => s.ConfirmPassword)
+                            }
+                            else
+                            {
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Password</label>
+                                            @Html.PasswordFor(s => s.Password, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(s => s.Password, null, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Confirm Password</label>
+                                            @Html.PasswordFor(s => s.ConfirmPassword, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(s => s.ConfirmPassword, null, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Photo</label>
+                                        @Html.TextBoxFor(s => s.ProfilePicture, new { @class = "dropify", @data_height = "180", @onchange = "readURL(this)", @type = "file", @accept = ".jpg,.jpeg,.png", @data_default_file = "/Assets/images/ProfilePicture/" + Model.Photo })
+                                        @Html.ValidationMessageFor(s => s.ProfilePicture, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Phone Number</label>
+                                        @Html.TextBoxFor(s => s.PhoneNumber, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.PhoneNumber, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Any Disability</label>
+                                        @Html.CheckBoxFor(s => s.Disability, new { @class = "checkbox", @id = "chkDisability" })
+                                        @Html.ValidationMessageFor(s => s.Disability, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6 showNone" id="dvDisabilityDetail">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Detail</label>
+                                        @Html.TextAreaFor(s => s.DisabilityDescription, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.DisabilityDescription, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Is Active</label>
+                                        @Html.CheckBoxFor(s => s.IsActive, new { @class = "checkbox" })
+                                        @Html.ValidationMessageFor(s => s.IsActive, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @if (Model.Id > 0)
+                                        {
+                                            <input type="submit" name="name" value="Update" class="btn btn-primary" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" name="name" value="Save" class="btn btn-primary" />
+                                        }
+                                        <a href="/Patient/Index" class="btn btn-dark">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script>
+    $(document).on("change", "#chkDisability", function () {
+        if ($(this).is(":checked")) {
+            $("#dvDisabilityDetail").removeClass("showNone");
+        }
+        else {
+            $("#dvDisabilityDetail").addClass("showNone");
+        }
+    });
+
+    function readURL(input) {
+        if (IsImage(input) == true) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
+    }
+
+    function IsImage(input) {
+        var filePath = input.value;
+
+        var ext = filePath.substring(filePath.lastIndexOf('.') + 1).toLowerCase();
+        if (ext == 'gif' || ext == 'png' || ext == 'jpg' || ext == 'jpeg') {
+
+            return true;
+        }
+        else {
+            alert('Only Image File is Allowed.Please Select Image File.');
+            return false;
+        }
+    }
+</script>

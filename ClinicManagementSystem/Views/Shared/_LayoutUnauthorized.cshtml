@@ -1,0 +1,166 @@
+﻿
+@{
+    ViewBag.Title = "Agent Setup";
+    Layout = null;
+}
+
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+
+    <meta name="msapplication-TileColor" content="#0f75ff">
+    <meta name="theme-color" content="#9d37f6">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+
+    <!-- Title -->
+    <title>Clinic Management System</title>
+    <link rel="stylesheet" href="~/Assets/fonts/fonts/font-awesome.min.css">
+    <!-- Toaster -->
+    <link href="~/Assets/plugins/toast/jquerytoastmin.css" rel="stylesheet" />
+    <!-- Bootstrap Css -->
+    <link href="~/Assets/plugins/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Sidemenu Css -->
+    <link href="~/Assets/plugins/toggle-sidebar/sidemenu.css" rel="stylesheet" />
+
+
+    <!-- Dashboard css -->
+    <link href="~/Assets/css/dashboard.css" rel="stylesheet" />
+    <link href="~/Assets/css/admin-custom.css" rel="stylesheet" />
+
+    <!-- c3.js Charts Plugin -->
+    <link href="~/Assets/plugins/charts-c3/c3-chart.css" rel="stylesheet" />
+
+    <!---Font icons-->
+    <link href="~/Assets/css/icons.css" rel="stylesheet" />
+
+    
+</head>
+<body class="construction-image">
+    <!--Loader-->
+    <div id="global-loader">
+        <img src="~/Assets/images/products/products/loader.png" class="loader-img floating" alt="">
+    </div>
+
+    <!--Page-->
+    <div class="page ">
+        <div class="page-content z-index-10">
+            <div class="container text-center">
+                <div class="row">
+                    <div class="col-xl-4 col-md-12 col-md-12 d-block mx-auto">
+                        <div class="card mb-0">
+
+                            <div class="card-body">
+                                @RenderBody()
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="searchModel" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Clinic Management System</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="departmentForm">
+                            <div class="form-group">
+                                <label class="form-label">PermiNo: &nbsp;&nbsp;<span id="PermiNo"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Travel From: &nbsp;&nbsp;<span id="TravelFrom"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Travel To: &nbsp;&nbsp;<span id="TravelTo"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Expiry Date: &nbsp;&nbsp;<span id="ExpiryDate"></span></label>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Status: &nbsp;&nbsp;<span id="Status"></span></label>
+                            </div>
+                            <div class="form-group mb-0">
+                                <div class="checkbox checkbox-secondary">
+                                    <button class="btn btn-info" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="searchEmptyModel" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog">
+                <!-- Modal content-->
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Clinic Management System</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="departmentForm">
+                            <div class="form-group">
+                                <label class="form-label" for="exampleInputEmail1">No Record Found</label>
+                            </div>
+                            <div class="form-group mb-0">
+                                <div class="checkbox checkbox-secondary">
+                                    <button class="btn btn-info" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+
+
+    <!-- Dashboard js -->
+    <script src="~/Assets/js/vendors/jquery-3.2.1.min.js"></script>
+    <script src="~/Assets/plugins/bootstrap-4.3.1-dist/js/popper.min.js"></script>
+    <script src="~/Assets/plugins/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+    <script src="~/Assets/js/vendors/jquery.sparkline.min.js"></script>
+    <script src="~/Assets/js/vendors/selectize.min.js"></script>
+    <script src="~/Assets/js/vendors/jquery.tablesorter.min.js"></script>
+    <script src="~/Assets/js/vendors/circle-progress.min.js"></script>
+    <script src="~/Assets/plugins/rating/jquery.rating-stars.js"></script>
+    <!-- Custom scroll bar Js-->
+    <script src="~/Assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <!-- Fullside-menu Js-->
+    <script src="~/Assets/plugins/toggle-sidebar/sidemenu.js"></script>
+
+
+    <!--Counters -->
+    <script src="~/Assets/plugins/counters/counterup.min.js"></script>
+    <script src="~/Assets/plugins/counters/waypoints.min.js"></script>
+
+
+    <!-- Custom Js-->
+    <script src="~/Assets/js/admin-custom.js"></script>
+    <!-- Data tables -->
+    <script src="~/Assets/plugins/datatable/jquery.dataTables.min.js"></script>
+    <script src="~/Assets/plugins/datatable/dataTables.bootstrap4.min.js"></script>
+    <script src="~/Assets/js/datatable.js"></script>
+    <!---Toaster-->
+    <script src="~/Assets/plugins/toast/jquerytoastmin.js"></script>
+    <script src="~/Scripts/Generic.js"></script>
+    <script src="~/Scripts/Method.js"></script>
+
+</body>
+</html>

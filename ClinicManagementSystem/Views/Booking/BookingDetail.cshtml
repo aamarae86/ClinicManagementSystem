@@ -1,0 +1,318 @@
+﻿@model DAL.PatientMedicalHistory
+@{
+    ViewBag.Title = "Booking Detail";
+}
+
+<style>
+    .showNone {
+        display: none;
+    }
+</style>
+@using (Html.BeginForm("BookingDetail", "Booking", FormMethod.Post, new { @id = "frmDisease", @enctype = "multipart/form-data" }))
+{
+    <div class="app-content  my-3 my-md-5">
+        <div class="side-app">
+
+            <div class="row">
+                <div class="col-md-12 col-lg-12">
+                    <div class="card">
+                        <div class="card-body">
+                            @Html.HiddenFor(s => s.DetailID,new { @id="hdfId"})
+                            @Html.HiddenFor(s => s.BookingID)
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Patient Name</label>
+                                        @Html.TextBoxFor(s => s.PatientName, new { @class = "form-control", @readonly = "readonly" })
+                                        @Html.ValidationMessageFor(s => s.PatientName, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Assign Doctor</label>
+                                        @Html.DropDownListFor(m => m.DoctorId, new SelectList(Model.lstDoctors, "ID", "Name"), "Please select", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.DoctorId, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Height</label>
+                                        @Html.TextBoxFor(s => s.Height, new { @class = "form-control txtName", @id = "txtName" })
+                                        @Html.ValidationMessageFor(s => s.Height, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Temperature</label>
+                                        @Html.TextBoxFor(s => s.Temperature, new { @class = "form-control txtUserName", @id = "txtUserName" })
+                                        @Html.ValidationMessageFor(s => s.Temperature, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Blood Pressure Min</label>
+                                        @Html.TextBoxFor(s => s.BloodPressureMin, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.BloodPressureMin, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Blood Pressure Max</label>
+                                        @Html.TextBoxFor(s => s.BloodPressureMax, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.BloodPressureMax, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Weight</label>
+                                        @Html.TextBoxFor(s => s.Weight, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.Weight, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Symptoms</label>
+                                        <div class="clockpicker" data-placement="bottom" data-align="top" data-autoclose="true">
+                                            @Html.TextAreaFor(s => s.Symptoms, new { @class = "form-control" })
+                                        </div>
+                                        @Html.ValidationMessageFor(s => s.Symptoms, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Medical History</label>
+                                        @Html.CheckBoxFor(s => s.MedicalHistory, new { @class = "checkbox", @id = "chkDisability" })
+                                        @Html.ValidationMessageFor(s => s.MedicalHistory, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-6 showNone" id="dvDisabilityDetail">
+                                    <div class="form-group">
+                                        <label class="form-label" for="ADFirstName">Detail</label>
+                                        @Html.TextAreaFor(s => s.MedicalHistoryDetail, new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(s => s.MedicalHistoryDetail, null, new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                            </div>
+                            @if (User.IsInRole("Doctor"))
+                            {
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Medicine</label>
+                                            @Html.TextAreaFor(s => s.Medicine, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(s => s.Medicine, null, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Doctor's Comments</label>
+                                            @Html.TextAreaFor(s => s.DoctorComments, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(s => s.DoctorComments, null, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Recommend Tests</label>
+                                            @Html.TextAreaFor(s => s.RecommendedTests, new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(s => s.RecommendedTests, null, new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Upload Reports</label>
+                                            @Html.TextBoxFor(model => model.FileName, "", new { @id = "fileInput", @class = "form-control", @type = "file", @accept = ".jgp,.jpeg,.png,.pdf" })
+                                            @Html.ValidationMessageFor(model => model.FileName, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label" for="ADFirstName">Description</label>
+                                            @Html.TextBoxFor(model => model.Description, "", new { @class = "form-control", @id = "txtDescription" })
+                                            @Html.ValidationMessageFor(model => model.Description, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <a id="btnUpload" class="btn btn-primary">Upload</a>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <table class="table table-bordered" id="FilesList" style="visibility:hidden">
+                                            <thead>
+                                                <tr>
+                                                    <th>
+                                                        Attachment(s)
+                                                    </th>
+                                                    <th>
+                                                        File Name
+                                                    </th>
+                                                    <th>
+                                                        Description
+                                                    </th>
+                                                    <th>
+                                                        Action
+                                                    </th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                @if (Model.MedicalReports.Count > 0)
+                                                {
+                                                    foreach (var item in Model.MedicalReports)
+                                                    {
+                                                        <tr id="@(string.Format("tr-{0}",item.ReportId))">
+                                                            <td><img src="~/Assets/images/Reports/@item.TestReportName" height="50" width="50" /></td>
+                                                            <td>@item.OriginalReportName</td>
+                                                            <td>@item.ReportDescription</td>
+                                                            <td>
+                                                                <a onclick="DeleteFile(@item.ReportId)"><span class="glyphicon glyphicon-remove red"></span></a>
+                                                            </td>
+                                                        </tr>
+                                                    }
+                                                }
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+                            }
+                            <div class="row">
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        @if (Model.DetailID > 0)
+                                        {
+                                            <input type="submit" name="name" value="Update" class="btn btn-primary" />
+                                        }
+                                        else
+                                        {
+                                            <input type="submit" name="name" value="Save" class="btn btn-primary" />
+                                        }
+                                        <a href="/Booking/Index" class="btn btn-dark">Cancel</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script>
+        
+        var image = "";
+        $(document).ready(function () {
+            toggleHistory();
+            chkatchtbl();
+        });
+
+        function readURL(input) {
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+
+                reader.onload = function (e) {
+                    //$('#blah').attr('src', e.target.result);
+                    image = e.target.result;
+                }
+
+                reader.readAsDataURL(input.files[0]); // convert to base64 string
+            }
+        }
+
+        $("#fileInput").change(function () {
+            readURL(this);
+        });
+
+        $("#btnUpload").on("click", function () {
+            var formdata = new FormData();
+            var fileInput = document.getElementById('fileInput');
+            //Iterating through each files selected in fileInput
+            for (i = 0; i < fileInput.files.length; i++) {
+                var sfilename = fileInput.files[i].name;
+                let srandomid = Math.random().toString(36).substring(7);
+
+                formdata.append(sfilename, fileInput.files[i]);
+                formdata.append(sfilename + "s", $("#txtDescription").val());
+                formdata.append(sfilename + "id", $("#hdfId").val());
+
+                $.ajax({
+                    url: '/Booking/UploadReports',
+                    type: "POST",
+                    contentType: false, // Not to set any content header  
+                    processData: false, // Not to process data  
+                    data: formdata,
+                    async: false,
+                    success: function (result) {
+                        var markup = "<tr id='tr-" + result + "'><td><img id='blah' src='" + image + "' height='50' width='50' /></td><td>" + sfilename + "</td><td>" + $("#txtDescription").val() + "</td><td><a onclick='DeleteFile(\"" + result + "\",\"" + sfilename +
+                            "\")'><span class='glyphicon glyphicon-remove red'></span></a></td></tr>"; // Binding the file name
+                        $("#FilesList tbody").append(markup);
+                    },
+                    error: function (err) {
+                        alert(err.statusText);
+                    }
+                });  
+
+            }
+            chkatchtbl();
+            $('#fileInput').val('');
+        });
+
+        $(document).on("change", "#chkDisability", function () {
+            toggleHistory();
+        });
+
+        function toggleHistory() {
+            if ($("#chkDisability").is(":checked")) {
+                $("#dvDisabilityDetail").removeClass("showNone");
+            }
+            else {
+                $("#dvDisabilityDetail").addClass("showNone");
+            }
+        }
+
+        function DeleteFile(Fileid) {
+            $("#tr-" + Fileid).remove();
+            
+            $.ajax({
+                url: '/Booking/DeleteReport',
+                type: "POST",
+                data: { reportID: Fileid},
+                success: function (result) {
+                    if (result != "") {
+                        alert(result);
+                    }
+                },
+                error: function (err) {
+                    alert(err.statusText);
+                }
+            });  
+            chkatchtbl();
+        }
+        function chkatchtbl() {
+            if ($('#FilesList tr').length > 1) {
+                $("#FilesList").css("visibility", "visible");
+            } else {
+                $("#FilesList").css("visibility", "hidden");
+            }
+        }
+    </script>
+}
+
+

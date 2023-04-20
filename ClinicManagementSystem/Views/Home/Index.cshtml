@@ -1,0 +1,120 @@
+﻿@model DAL.FetchDashboardData_Result
+@{
+    ViewBag.Title = "Dashboard";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="app-content  my-3 my-md-5">
+    <div class="side-app">
+        <div class="page-header">
+            <h4 class="page-title">Dashboard</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Dashboard</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Dashboard</li>
+            </ol>
+        </div>
+        <div class="row">
+            @if (User.IsInRole("Admin"))
+            {
+                <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 ">
+                    <div class="card overflow-hidden">
+                        <div class="card-header">
+                            <h3 class="card-title">Doctors</h3>
+                            <div class="card-options"> <a class="btn btn-sm btn-primary" href="/Doctor/Index">View</a> </div>
+                        </div>
+                        <div class="card-body ">
+                            <h5 class="">Total Doctors</h5>
+                            <h2 class="text-dark  mt-0 ">@Model.Doctor</h2>
+                            <div class="progress progress-sm mt-0 mb-2">
+                                <div class="progress-bar bg-primary w-75" role="progressbar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class=" col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                    <div class="card overflow-hidden">
+                        <div class="card-header">
+                            <h3 class="card-title">Receptionists</h3>
+                            <div class="card-options"> <a class="btn btn-sm btn-secondary" href="/Receptionist/Index">View</a> </div>
+                        </div>
+                        <div class="card-body ">
+                            <h5 class="">Total Receptionists</h5>
+                            <h2 class="text-dark  mt-0 ">@Model.Receptionists</h2>
+                            <div class="progress progress-sm mt-0 mb-2">
+                                <div class="progress-bar bg-secondary w-45" role="progressbar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            @if (User.IsInRole("Patient"))
+            {
+                <div class=" col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                    <div class="card overflow-hidden">
+                        <div class="card-header">
+                            <h3 class="card-title">Bookings</h3>
+                            <div class="card-options"> <a class="btn btn-sm btn-warning" href="/Booking/Index">View</a> </div>
+                        </div>
+                        <div class="card-body ">
+                            <h5 class="">My Bookings</h5>
+                            <h2 class="text-dark  mt-0 ">@Model.Bookings</h2>
+                            <div class="progress progress-sm mt-0 mb-2">
+                                <div class="progress-bar bg-warning w-50" role="progressbar"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            }
+            else
+            {
+                if (!User.IsInRole("Pharmacist"))
+                {
+                    <div class=" col-sm-12 col-md-6 col-lg-6 col-xl-3">
+                        <div class="card overflow-hidden">
+                            <div class="card-header">
+                                <h3 class="card-title">Bookings</h3>
+                                <div class="card-options"> <a class="btn btn-sm btn-warning" href="/Booking/Index">View</a> </div>
+                            </div>
+                            <div class="card-body ">
+                                <h5 class="">Today Bookings</h5>
+                                <h2 class="text-dark  mt-0 ">@Model.Bookings</h2>
+                                <div class="progress progress-sm mt-0 mb-2">
+                                    <div class="progress-bar bg-warning w-50" role="progressbar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+                if (!User.IsInRole("Doctor"))
+                {
+                    <div class="col-sm-12 col-md-6 col-lg-6 col-xl-3 ">
+                        <div class="card overflow-hidden">
+                            <div class="card-header">
+                                <h3 class="card-title">Patients</h3>
+                                @if (User.IsInRole("Pharmacist"))
+                                {
+                                    <div class="card-options"> <a class="btn btn-sm btn-success" href="/Pharmacist/PatientMedicine">View</a> </div>
+                                }
+                                else
+                                {
+                                    <div class="card-options"> <a class="btn btn-sm btn-success" href="/Patient/Index">View</a> </div>
+                                }
+                            </div>
+                            <div class="card-body ">
+                                <h5 class="">Total Patients</h5>
+                                <h2 class="text-dark  mt-0">@Model.Patients</h2>
+                                <div class="progress progress-sm mt-0 mb-2">
+                                    <div class="progress-bar bg-success w-25" role="progressbar"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+
+            }
+
+        </div>
+
+    </div>
+</div>

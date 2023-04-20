@@ -1,0 +1,236 @@
+﻿@*@model TravelPermit.Models.RegisterViewModel
+@{
+    ViewBag.Title = "Register";
+    Layout = null;
+}
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+
+
+    <style>
+
+        body {
+            background-image: url('/Assets/images/AdminLog4.jpg');
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-TileColor" content="#0f75ff">
+    <meta name="theme-color" content="#2ddcd3">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+     Title 
+    <title> TravelPermit</title>
+
+     Bootstrap Css 
+    <link href="~/Assets/plugins/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet" />
+
+     Dashboard Css 
+    <link href="~/Assets/css/dashboard.css" rel="stylesheet" />
+
+     Font-awesome  Css 
+    <link href="~/Assets/css/icons.css" rel="stylesheet" />
+
+    Horizontal Menu
+    <link href="~/Assets/plugins/Horizontal2/Horizontal-menu/dropdown-effects/fade-down.css" rel="stylesheet" />
+    <link href="~/Assets/plugins/Horizontal2/Horizontal-menu/horizontal.css" rel="stylesheet" />
+    <link href="~/Assets/plugins/Horizontal2/Horizontal-menu/color-skins/color.css" rel="stylesheet" />
+
+    Select2 Plugin 
+    <link href="~/Assets/plugins/select2/select2.min.css" rel="stylesheet" />
+
+
+     Custom scroll bar css
+    <link href="~/Assets/plugins/scroll-bar/jquery.mCustomScrollbar.css" rel="stylesheet" />
+
+
+     COLOR-SKINS 
+    <link id="theme" rel="stylesheet" type="text/css" media="all" href="~/Assets/webslidemenu/color-skins/color10.css" />
+
+</head>
+<body>
+
+    Breadcrumb
+    
+    /Breadcrumb
+    Register-section
+    <section class="sptb">
+        <div class="container customerpage">
+            <div class="row">
+                <div class="single-page">
+                    <div class="col-lg-5 col-xl-4 col-md-6 d-block mx-auto">
+                        <div class="wrapper wrapper2">
+                            @using (Html.BeginForm("Register", "Account", FormMethod.Post, new { @class = "card-body", role = "form", id = "Register", tabindex = "500" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <h3>New User</h3>
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="name">
+                                    @Html.TextBoxFor(m => m.FirstName, new { @class = "form-control" })
+
+                                    @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "text-danger" })
+
+                                    @Html.LabelFor(m => m.FirstName, new { @class = "control-label" })
+
+                                </div>
+                                <div class="name">
+                                    @Html.TextBoxFor(m => m.LastName, new { @class = "form-control" })
+
+                                    @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "text-danger" })
+
+                                    @Html.LabelFor(m => m.LastName, new { @class = "control-label" })
+
+                                </div>
+
+
+                                <div class="name">
+                                    @Html.TextBoxFor(m => m.Email, new { @class = "form-control" })
+
+                                    @Html.ValidationMessageFor(m => m.Email, "", new { @class = "text-danger" })
+
+                                    @Html.LabelFor(m => m.Email, new { @class = "control-label" })
+
+                                </div>
+                                <div class="user-name">
+
+
+                                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+
+                                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+
+                                    @Html.LabelFor(m => m.Username, "UserName", new { @class = "control-label" })
+
+                                </div>
+                                <div class="passwd">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control", @type = "password", @name = "password" })
+
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+
+                                    @Html.LabelFor(m => m.Password, new { @class = "control-label" })
+                                </div>
+                                <div class="passwd">
+                                    @Html.PasswordFor(m => m.ConfirmPassword, new { @class = "form-control", @type = "password", @name = "Confirm Password" })
+
+                                    @Html.ValidationMessageFor(m => m.ConfirmPassword, "", new { @class = "text-danger" })
+
+                                    @Html.LabelFor(m => m.ConfirmPassword, "Confirm Password", new { @class = "control-label" })
+
+                                </div>
+                                <div class="address">
+                                    @Html.TextBoxFor(m => m.PhoneNumber, new { @class = "form-control" })
+
+                                    @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "text-danger" })
+
+                                    @Html.LabelFor(m => m.PhoneNumber, "Phone Number", new { @class = "control-label" })
+
+                                </div>
+                                <div class="address">
+                                    @Html.TextAreaFor(m => m.Address, new { @class = "form-control" })
+
+                                    @Html.ValidationMessageFor(m => m.Address, "", new { @class = "text-danger" })
+
+                                    @Html.LabelFor(m => m.Address, "Address", new { @class = "control-label" })
+
+                                </div>
+                                <div class="cb">
+                                    
+                                    @Html.CheckBoxFor(m => m.IsActive,new { @style = "height: auto;" })
+                                    @Html.LabelFor(m => m.IsActive, "Status", new { @class = "control-label" })
+
+                                </div>
+                                <div class="submit">
+                                    <a> <input type="submit" class="btn btn-primary btn-block" value="Register" />Register</a>
+                                    <a class="btn btn1-info btn-block" href="/User/Index">Back</a>
+                                </div>
+                            }
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    Register-section
+     Back to top 
+    <a href="#top" id="back-to-top"><i class="fa fa-rocket"></i></a>
+
+     JQuery js
+    <script src="~/Assets/js/vendors/jquery-3.2.1.min.js"></script>
+
+     Bootstrap js 
+    <script src="~/Assets/plugins/bootstrap-4.3.1-dist/js/popper.min.js"></script>
+    <script src="~/Assets/plugins/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+    JQuery Sparkline Js
+    <script src="~/Assets/js/vendors/jquery.sparkline.min.js"></script>
+
+     Circle Progress Js
+    <script src="~/Assets/js/vendors/circle-progress.min.js"></script>
+
+     Star Rating Js
+    <script src="~/Assets/plugins/rating/jquery.rating-stars.js"></script>
+
+    Owl Carousel js 
+    <script src="~/Assets/plugins/owl-carousel/owl.carousel.js"></script>
+
+    Horizontal Menu
+    <script src="~/Assets/plugins/Horizontal2/Horizontal-menu/horizontal.js"></script>
+
+    JQuery TouchSwipe js
+    <script src="~/Assets/js/jquery.touchSwipe.min.js"></script>
+
+    Select2 js 
+    <script src="~/Assets/plugins/select2/select2.full.min.js"></script>
+    <script src="~/Assets/js/select2.js"></script>
+
+
+     Custom scroll bar Js
+    <script src="~/Assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+     sticky Js
+    <script src="~/Assets//js/sticky.js"></script>
+
+     Swipe Js
+    <script src="~/Assets/js/swipe.js"></script>
+
+     Scripts Js
+    <script src="~/Assets/js/scripts2.js"></script>
+
+     Custom Js
+    <script src="~/Assets/js/custom.js"></script>
+    <script>
+        $('#RoleId').change(function () {
+            if ($('#RoleId option:selected').val() == '2') {
+                $('#DeptID').val('');
+                $('#deptDiv').show();
+            }
+            else {
+                $('#deptDiv').hide();
+                if ($('#RoleId option:selected').val() == '3') {
+                    $('#DeptID').val('2');
+                }
+                else {
+                    $('#DeptID').val('');
+                }
+            }
+        });
+        $('#DeptID > option').each(function () {
+            if ($(this).val()=='2') {
+                $(this).prop('hidden',true);
+            }
+        });
+    </script>
+</body>
+</html>*@
+
+
+

@@ -1,0 +1,149 @@
+﻿
+@{
+    ViewBag.Title = "Manage Diseases";
+}
+
+<div class="app-content  my-3 my-md-5">
+    <div class="side-app">
+        <div class="page-header">
+            <h4 class="page-title">Diseases List</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Disease</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Diseases List</li>
+            </ol>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                @if (!string.IsNullOrEmpty(Convert.ToString(TempData["Message"])))
+                                {
+                                    if (Convert.ToString(TempData["Message"]).StartsWith("Success"))
+                                    {
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" id="alertMessage">
+                                            <strong>@(Convert.ToString(TempData["Message"]))</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alertMessage">
+                                            <strong>@(Convert.ToString(TempData["Message"]))</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-4">
+                                <select id="ddlStatus" class="form-control select" onchange="BindGrid()">
+                                    <option value="">All Statuses</option>
+                                    <option value="1">Active</option>
+                                    <option value="0">Inactive</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-8">
+                                <button class="btn btn-primary pull-right" id="btnAddNew"><i class="fa fa-plus fa-fw"></i> Add New</button>
+                            </div>
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table id="dataTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th>Disease</th>
+                                        @*<th>Status</th>*@
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="addUpdateSpecialization" class="modal fade" role="dialog" data-keyboard="false" data-backdrop="static">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h4 class="modal-title">Add Update Disease</h4>
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    </div>
+                    <div class="modal-body" id="modalBody">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    BindGrid();
+
+    $("#alertMessage").fadeTo(2000, 500).slideUp(500, function () {
+        $("#alertMessage").slideUp(500);
+    });
+
+    $(document).on("click", "#btnAddNew", function () {
+        $.ajax({
+            url: "/Disease/Create",
+            type: "Post",
+            data: {},
+            success: function (result) {
+                $("#modalBody").html(result);
+                $.validator.unobtrusive.parse("#frmDisease");
+                $("#addUpdateSpecialization").modal("show");
+            }
+        });
+    });
+
+    $(document).on("click", "#btnEdit", function () {
+        var specId = $(this).attr("data-id");
+        $.ajax({
+            url: "/Disease/Create",
+            type: "Post",
+            data: { id: specId },
+            success: function (result) {
+                $("#modalBody").html(result);
+                $.validator.unobtrusive.parse("#frmDisease");
+                $("#addUpdateSpecialization").modal("show");
+            }
+        });
+    });
+
+    function BindGrid() {
+        var RequestSearch = { Status: $('#ddlStatus option:selected').val() };
+        $("#dataTable").advancedDataTable({
+            url: "/Disease/Fetch",
+            postData: RequestSearch,
+            bindingData: [
+                { "data": "Name" },
+                //{
+                //    "render": function (data, type, row) {
+                //        return Label(row.IsActive);
+                //    },
+                //},
+                {
+                    "render": function (data, type, row) {
+                        return '<button title="Edit" class="btn btn-sm btn-info" id="btnEdit" data-id="' + row.Id + '"><i class="fa fa-pencil"></i</button>';
+                    },
+                    "orderable": false
+                }
+            ],
+        });
+    }
+</script>
+
+

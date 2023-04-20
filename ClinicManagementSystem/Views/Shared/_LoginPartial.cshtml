@@ -1,0 +1,101 @@
+﻿@using Microsoft.AspNet.Identity
+@*@if (Request.IsAuthenticated)
+    {
+        using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+        {
+        @Html.AntiForgeryToken()
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                @Html.ActionLink("Hello " + User.Identity.GetUserName() + "!", "Index", "Manage", routeValues: null, htmlAttributes: new { title = "Manage" })
+            </li>
+            <li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>
+        </ul>
+        }
+    }
+    else
+    {
+        <ul class="nav navbar-nav navbar-right">
+            <li>@Html.ActionLink("Register", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</li>
+            <li>@Html.ActionLink("Log in", "Login", "Account", routeValues: null, htmlAttributes: new { id = "loginLink" })</li>
+        </ul>
+    }*@
+
+
+
+
+@{
+    //bool? ShowProfile;
+    //ShowProfile = false;
+    //string msg = string.Empty;
+    //  var profileimage = string.Empty;
+
+    //DAL.DocumentManagementSystemEntities db = new DAL.DocumentManagementSystemEntities();
+    DAL.AspNetUser UserProfile = (new TravelPermit.GenericModel()).FetchUserProfile();
+    if (!string.IsNullOrEmpty(UserProfile.Photo))
+    {
+        string path = Server.MapPath("~/Assets/images/ProfilePicture");
+        if (!System.IO.File.Exists(path + "/" + UserProfile.Photo))
+        {
+
+            UserProfile.Photo = "DefaultImage.jpg";
+        }
+    }
+    else
+    {
+        UserProfile.Photo = "DefaultImage.jpg";
+    }
+}
+
+
+
+@using (Html.BeginForm("LogOff", "Account", FormMethod.Post, new { id = "logoutForm", @class = "navbar-right" }))
+{
+    @Html.AntiForgeryToken()
+
+
+
+
+    <div class="dropdown ">
+        <a href="User/UserProfile?ShowProfile=true" class="nav-link pr-0 leading-none user-img" data-toggle="dropdown">
+            <img src="~/Assets/images/ProfilePicture/@UserProfile.Photo" alt="profile-img" class="avatar avatar-md brround">
+        </a>
+
+        <div class="dropdown-menu dropdown-menu-right dropdown-menu-arrow ">
+            <i class="dropdown-icon icon"></i>@Html.Label("Welcome" + "   " + User.Identity.GetUserName() + "!")
+
+            <a href="/User/UserProfile" class="dropdown-item">
+                <i class="dropdown-icon icon icon-user"></i> My Profile
+            </a>
+
+            <a href="/Manage/ChangePassword" class="dropdown-item">
+                <i class="dropdown-icon icon icon-user"></i> Change Password
+            </a>
+
+            @*<a class="dropdown-item" href="profile.html">
+                    <i class="dropdown-icon icon icon-user"></i> My Profile
+                </a>*@
+            @*<a class="dropdown-item" href="emailservices.html">
+                <i class="dropdown-icon icon icon-speech"></i> Inbox
+            </a>
+            <a class="dropdown-item" href="editprofile.html">
+                <i class="dropdown-icon  icon icon-settings"></i> Account Settings
+            </a>*@
+            <a class="dropdown-item" href="javascript:document.getElementById('logoutForm').submit()">
+                @*<li><a href="javascript:document.getElementById('logoutForm').submit()">Log off</a></li>*@
+                <i class="dropdown-icon icon icon-power"></i>
+                Log off
+                @*@Html.ActionLink("Log out", "LogOut", "Account")@*Log out*@
+            </a>
+            @*<a class="dropdown-item" href="login.html">
+                    <i class="dropdown-icon icon icon-power"></i> Log out
+                </a>*@
+        </div>
+    </div>
+
+
+
+
+
+
+}

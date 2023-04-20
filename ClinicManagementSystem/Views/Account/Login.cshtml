@@ -1,0 +1,225 @@
+﻿@using TravelPermit.Models
+@model LoginViewModel
+@{
+    ViewBag.Title = "Log In";
+    Layout = null;
+}
+<!doctype html>
+<html lang="en" dir="ltr">
+<head>
+   
+    <style>
+
+        body {
+            background-image: url('/Assets/images/hospital1.jpg');
+            height: 500px; /* You must set a specified height */
+            background-position: center; /* Center the image */
+            background-repeat: no-repeat; /* Do not repeat the image */
+            background-size: cover; 
+        }
+    </style>
+    <meta charset="UTF-8">
+    <meta name='viewport' content='width=device-width, initial-scale=1.0, user-scalable=0'>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="msapplication-TileColor" content="#0f75ff">
+    <meta name="theme-color" content="#2ddcd3">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="HandheldFriendly" content="True">
+    <meta name="MobileOptimized" content="320">
+    <link rel="icon" href="favicon.ico" type="image/x-icon" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
+
+    <!-- Title -->
+    <title>Clinic Management System</title>
+
+    <!-- Bootstrap Css -->
+    <link href="~/Assets/plugins/bootstrap-4.3.1-dist/css/bootstrap.min.css" rel="stylesheet" />
+
+    <!-- Dashboard Css -->
+    <link href="~/Assets/css/dashboard.css" rel="stylesheet" />
+
+    <!-- Font-awesome  Css -->
+    <link href="~/Assets/css/icons.css" rel="stylesheet" />
+
+    <!--Horizontal Menu-->
+    <link href="~/Assets/plugins/Horizontal2/Horizontal-menu/dropdown-effects/fade-down.css" rel="stylesheet" />
+    <link href="~/Assets/plugins/Horizontal2/Horizontal-menu/horizontal.css" rel="stylesheet" />
+    <link href="~/Assets/plugins/Horizontal2/Horizontal-menu/color-skins/color.css" rel="stylesheet" />
+
+    <!--Select2 Plugin -->
+    <link href="~/Assets/plugins/select2/select2.min.css" rel="stylesheet" />
+
+
+    <!-- Custom scroll bar css-->
+    <link href="~/Assets/plugins/scroll-bar/jquery.mCustomScrollbar.css" rel="stylesheet" />
+
+    <!-- COLOR-SKINS -->
+    <link id="theme" rel="stylesheet" type="text/css" media="all" href="~/Assets/webslidemenu/color-skins/color10.css" />
+
+</head>
+<body>
+
+    @*<script>
+        window.onload = setUp;
+
+        function setUp()
+        {
+            if (window.ActiveXObject)
+            {
+                document.body.onresize = liveWidth;
+            }
+            else window.onresize = liveWidth;
+        }
+        function liveWidth() {
+            window.location.href = window.location.href;
+        }
+    </script>*@
+
+    <!--Sliders Section-->
+    @*<section class="h-10">
+            <div class="bannerimg cover-image bg-background3 " data-image-src="/Assets/images/banners/banner2.jpg">
+                <div class="header-text mb-0">
+                    <div class="container">
+                        <div class="text-center text-white">
+                            <h1 class="">Login</h1>
+                            <ol class="breadcrumb text-center">
+                                <li class="breadcrumb-item"><a href="#">Home</a></li>
+                                <li class="breadcrumb-item"><a href="#">Pages</a></li>
+                                <li class="breadcrumb-item active text-white" aria-current="page">Login</li>
+                            </ol>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>*@
+    <!--/Sliders Section-->
+    <!--Login-Section-->
+    <section class="sptb" id="loginForm" style="padding-top: 6rem;">
+
+        <div class="container customerpage">
+            <div class="row">
+                <div class="single-page">
+                    <div class="col-lg-5 col-xl-4 col-md-6 d-block mx-auto">
+                        <div class="wrapper wrapper2">
+                            @*<form id="login" class="card-body" tabindex="500">*@
+                            @using (Html.BeginForm("Login", "Account", new { ReturnUrl = ViewBag.ReturnUrl }, FormMethod.Post, new { @class = "card-body", role = "form", id = "login", tabindex = "500" }))
+                            {
+                                @Html.AntiForgeryToken()
+                                <hr />
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <h3>Login</h3>
+                                <div class="mail">
+                                    @*<input type="email" name="mail">*@
+                                    @Html.TextBoxFor(m => m.Username, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Username, "", new { @class = "text-danger" })
+                                    @*<label>Mail or Username</label>*@
+                                    @Html.LabelFor(m => m.Username, new { @class = "col-md-2 control-label" })
+                                </div>
+                                <div class="passwd">
+                                    @Html.PasswordFor(m => m.Password, new { @class = "form-control" })
+                                    @Html.ValidationMessageFor(m => m.Password, "", new { @class = "text-danger" })
+                                    @*<input type="password" name="password">
+                                        <label>Password</label>*@
+                                    @Html.LabelFor(m => m.Password, new { @class = "col-md-2 control-label" })
+                                </div>
+                                @*<div class="checkbox">
+
+                                        @Html.CheckBoxFor(m => m.RememberMe)
+                                        @Html.LabelFor(m => m.RememberMe)
+
+                                    </div>*@
+
+                        <div class="submit">
+                            <a> <input type="submit" value="Log in" class="btn btn-primary btn-block" />Log in</a>&nbsp;
+                            <a class="btn btn-info btn-block" href="/">Back</a>
+                            @*<a class="btn btn-primary btn-block"  href="index.html">Login</a>*@
+                        </div>
+                                @*<a href="forgot.html">Forgot Password</a>*@
+                                <p class="mb-2">@Html.ActionLink("Forgot your password?", "ForgotPassword")</p>
+
+
+                                @*<a href="register.html" class="text-primary ml-1">Sign UP</a>*@
+                                @*<p class="text-dark mb-0">Don't have account? @Html.ActionLink("Sign UP", "Register", null, new { @class = "text-primary ml-1" }) </p>*@
+                                @*</form>*@
+                            }
+                            @*<hr class="divider">
+                                <div class="card-body">
+                                    <div class="text-center">
+                                        <div class="btn-group">
+                                            <a href="https://www.facebook.com/" class="btn btn-icon mr-2 brround">
+                                                <span class="fa fa-facebook"></span>
+                                            </a>
+                                        </div>
+                                        <div class="btn-group">
+                                            <a href="https://www.google.com/gmail/" class="btn  mr-2 btn-icon brround">
+                                                <span class="fa fa-google"></span>
+                                            </a>
+                                        </div>
+                                        <div class="btn-group">
+                                            <a href="https://twitter.com/" class="btn  btn-icon brround">
+                                                <span class="fa fa-twitter"></span>
+                                            </a>
+                                        </div>
+                                    </div>
+                                </div>*@
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </section>
+    <!--/Login-Section-->
+    <!-- Back to top -->
+    <a href="#top" id="back-to-top"><i class="fa fa-rocket"></i></a>
+
+    <!-- JQuery js-->
+    <script src="~/Assets/js/vendors/jquery-3.2.1.min.js"></script>
+
+    <!-- Bootstrap js -->
+    <script src="~/Assets/plugins/bootstrap-4.3.1-dist/js/popper.min.js"></script>
+    <script src="~/Assets/plugins/bootstrap-4.3.1-dist/js/bootstrap.min.js"></script>
+
+    <!--JQuery Sparkline Js-->
+    <script src="~/Assets/js/vendors/jquery.sparkline.min.js"></script>
+
+    <!-- Circle Progress Js-->
+    <script src="~/Assets/js/vendors/circle-progress.min.js"></script>
+
+    <!-- Star Rating Js-->
+    <script src="~/Assets/plugins/rating/jquery.rating-stars.js"></script>
+
+    <!--Owl Carousel js -->
+    <script src="~/Assets/plugins/owl-carousel/owl.carousel.js"></script>
+
+    <!--Horizontal Menu-->
+    <script src="~/Assets/plugins/Horizontal2/Horizontal-menu/horizontal.js"></script>
+
+    <!--JQuery TouchSwipe js-->
+    <script src="~/Assets/js/jquery.touchSwipe.min.js"></script>
+
+    <!--Select2 js -->
+    <script src="~/Assets/plugins/select2/select2.full.min.js"></script>
+    <script src="~/Assets/js/select2.js"></script>
+
+    <!-- sticky Js-->
+    <script src="~/Assets//js/sticky.js"></script>
+
+
+    <!-- Custom scroll bar Js-->
+    <script src="~/Assets/plugins/scroll-bar/jquery.mCustomScrollbar.concat.min.js"></script>
+
+    <!-- Swipe Js-->
+    <script src="~/Assets/js/swipe.js"></script>
+
+    <!-- Scripts Js-->
+    <script src="~/Assets/js/scripts2.js"></script>
+
+    <!-- Custom Js-->
+    <script src="~/Assets/js/custom.js"></script>
+</body>
+</html>
+
+

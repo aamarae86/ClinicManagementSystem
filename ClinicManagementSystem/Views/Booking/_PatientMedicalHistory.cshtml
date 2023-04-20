@@ -1,0 +1,24 @@
+﻿@model List<DAL.FetchPatientMedicalHistory_Result>
+
+@if (Model.Count > 0)
+{
+    <table class="table table-bordered">
+        <thead>
+            <tr>
+                <th>History</th>
+                <th>Date</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.MedicalHistoryDetail</td>
+                    <td>@(string.Format("{0:MM/dd/yyyy}",item.BookingDate))</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+}
+

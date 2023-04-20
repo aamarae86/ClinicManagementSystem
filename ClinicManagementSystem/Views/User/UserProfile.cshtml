@@ -1,0 +1,250 @@
+﻿
+@model DAL.AspNetUser
+@using Microsoft.AspNet.Identity
+@using Microsoft.AspNet.Identity.Owin;
+@{
+    ViewBag.Title = "User Profile";
+}
+
+
+<div class="app-content  my-3 my-md-5">
+    <div class="side-app">
+        <div class="page-header">
+            <h4 class="page-title">Edit Profile</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Profile</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Edit Profile</li>
+            </ol>
+
+        </div>
+
+        <div class="row ">
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">My Profile</h3>
+
+                    </div>
+                    <div class="card-body">
+                        <form>
+                            <div class="row mb-2">
+                                <div class="col-auto">
+
+                                    @if (!string.IsNullOrEmpty(Model.Photo))
+                                    {
+                                        <img src="~/Assets/images/ProfilePicture/@Model.Photo" class="brround" id="profilePhoto" height="100" width="100" alt="Profile Photo" />
+                                    }
+                                    else
+                                    {
+
+                                        <img src="~/Assets/images/faces/male/DefaultImage.jpg" id="blah" class="brround" height="100" width="100" alt="Profile Photo">
+
+                                    }
+
+                                </div>
+                                <div class="col">
+                                    <h3 class="mb-1 ">@Model.UserName</h3>
+
+
+
+                                    <p class="mb-4 ">@Model.FirstName @Model.LastName</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="form-label">Email-Address</label>
+
+                                @Html.TextBoxFor(s => s.Email, null, new { @class = "form-control", @disabled = "disabled" })
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-8">
+                @*<form class="card">*@
+                @using (@Html.BeginForm("UserProfile", "User", FormMethod.Post, new { enctype = "multipart/form-data", @class = "card" }))
+                {
+                    @Html.HiddenFor(x => x.Id)
+                        <div class="card-header">
+                            <h3 class="card-title">Edit Profile</h3>
+
+                        </div>
+
+                    
+                        <div class="card-body">
+                            <div class="row">
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">First Name</label>
+
+                                        @Html.TextBoxFor(s => s.FirstName, new { @class = "form-control" })
+                                        <span class="has-danger">
+                                            @Html.ValidationMessageFor(m => m.FirstName, "", new { @class = "form-control-feedback" })
+                                        </span>
+
+
+                                    </div>
+                                </div>
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Last Name</label>
+
+
+                                        @Html.TextBoxFor(s => s.LastName, new { @class = "form-control" })
+                                        <span class="has-danger">
+                                            @Html.ValidationMessageFor(m => m.LastName, "", new { @class = "form-control-feedback" })
+                                        </span>
+
+
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">User Name</label>
+                                        @Html.TextBoxFor(s => s.UserName, new { @class = "form-control", @disabled = "disabled" })
+
+                                        <span class="has-danger">
+                                            @Html.ValidationMessageFor(m => m.UserName, "", new { @class = "form-control-feedback" })
+                                        </span>
+
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="col-sm-6 col-md-6">
+                                    <div class="form-group">
+                                        <label class="form-label">Phone Number</label>
+
+                                        @Html.TextBoxFor(s => s.PhoneNumber, new { @class = "form-control" })
+
+                                        <span class="has-danger">
+                                            @Html.ValidationMessageFor(m => m.PhoneNumber, "", new { @class = "form-control-feedback" })
+                                        </span>
+
+                                    </div>
+                                </div>
+                                @if (User.IsInRole("Admin") && User.Identity.GetUserId<int>() != Model.Id)
+                                {
+
+                                    <div class="col-sm-6 col-md-6">
+                                        <div class="form-group">
+                                            <label class="form-label">Status</label>
+
+
+                                            @Html.CheckBoxFor(m => m.IsActive)
+                                            <span class="has-danger">
+                                                @Html.ValidationMessageFor(m => m.IsActive, "", new { @class = "form-control-feedback" })
+                                            </span>
+
+                                        </div>
+                                    </div>
+                                }
+
+                                <div class="col-md-12">
+                                    <div class="form-group mb-0">
+                                        <label class="form-label">Address</label>
+
+                                        @Html.TextAreaFor(s => s.Address, new { @class = "form-control", rows = "5" })
+
+                                        <span class="has-danger">
+                                            @Html.ValidationMessageFor(m => m.Address, "", new { @class = "form-control-feedback" })
+                                        </span>
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <div class="form-group">
+                                        <label class="form-label">Select Profile Picture</label>
+                                        <input data-default-file="/Assets/images/ProfilePicture/@Model.Photo" type="file" name="files" class="dropify" onchange="readURL(this)" data-height="180" id="imgInp" />
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <div class="card-footer text-right">
+                            <button type="submit" class="btn btn-primary">Update Profile</button>
+                        </div>
+                    
+                }
+            </div>
+
+
+        </div>
+    </div>
+</div>
+
+
+@if (!string.IsNullOrEmpty(Convert.ToString(TempData["IspasswordChanged"])))
+{
+
+    <script>
+            SuccessMessage('@TempData["IspasswordChanged"]');
+    </script>
+
+}
+
+
+<script>
+
+
+
+
+    function readURL(input) {
+        if (IsImage(input) == true) {
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function (e) {
+                    $('#blah').attr('src', e.target.result);
+                }
+
+                reader.readAsDataURL(input.files[0]);
+            }
+
+        }
+
+
+
+    }
+
+
+
+
+
+
+
+    //$(document).ready(function ()
+    //{
+
+    //    $("#imgInp").change(function ()
+    //    {
+    //        readURL(this);
+    //    });
+
+    //});
+
+    function IsImage(input) {
+        var filePath = input.value;
+
+        var ext = filePath.substring(filePath.lastIndexOf('.') + 1).toLowerCase();
+        if (ext == 'gif' || ext == 'png' || ext == 'jpg' || ext == 'jpeg') {
+
+            return true;
+        }
+        else {
+            alert('Only Image File is Allowed.Please Select Image File.');
+            return false;
+        }
+
+    }
+
+</script>

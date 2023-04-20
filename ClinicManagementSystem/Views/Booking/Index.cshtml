@@ -1,0 +1,218 @@
+﻿
+@{
+    ViewBag.Title = "Manage Bookings";
+}
+
+<div class="app-content  my-3 my-md-5">
+    <div class="side-app">
+        <div class="page-header">
+            <h4 class="page-title">Bookings List</h4>
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="#">Booking</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Bookings List</li>
+            </ol>
+
+        </div>
+        <div class="row">
+
+            <div class="col-md-12 col-lg-12">
+                <div class="card">
+
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-md-12 col-lg-12">
+                                @if (!string.IsNullOrEmpty(Convert.ToString(TempData["Message"])))
+                                {
+                                    if (Convert.ToString(TempData["Message"]).StartsWith("Success"))
+                                    {
+                                        <div class="alert alert-success alert-dismissible fade show" role="alert" id="alertMessage">
+                                            <strong>@(Convert.ToString(TempData["Message"]))</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <div class="alert alert-danger alert-dismissible fade show" role="alert" id="alertMessage">
+                                            <strong>@(Convert.ToString(TempData["Message"]))</strong>
+                                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-3">
+                                <input type="text" id="txtSearch" placeholder="Search" class="form-control" value="" onchange="BindGrid()" />
+                            </div>
+                            <div class="col-sm-3">
+                                <select id="ddlStatus" class="form-control select" onchange="BindGrid()">
+                                    <option value="">All Statuses</option>
+                                    <option value="Pending">Pending</option>
+                                    <option value="Approved">Approved</option>
+                                    <option value="Rejected">Rejected</option>
+                                </select>
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" id="txtFromDate" placeholder="Date From" class="form-control datepicker" value="" onchange="BindGrid()" />
+                            </div>
+                            <div class="col-sm-2">
+                                <input type="text" id="txtToDate" placeholder="Date To" class="form-control datepicker" value="" onchange="BindGrid()" />
+                            </div>
+                            @if (User.IsInRole("Admin") || User.IsInRole("Receptionist") || User.IsInRole("Patient"))
+                            {
+                                <div class="col-sm-2">
+                                    <button class="btn btn-primary pull-right" id="btnAddNew"><i class="fa fa-plus fa-fw"></i> Add New</button>
+                                </div>
+                            }
+
+                        </div>
+                        <br />
+                        <div class="table-responsive">
+                            <table id="dataTable" class="table table-striped table-bordered">
+                                <thead>
+                                    <tr>
+                                        <th></th>
+                                        <th>Patient Name</th>
+                                        <th>Disease</th>
+                                        <th>Booking Date</th>
+                                        <th>Booking Time</th>
+                                        @*<th>Status</th>*@
+                                        <th>Action</th>
+                                    </tr>
+                                </thead>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="medicalHistoryModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Patient Medical History</h4>
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+            </div>
+            <div class="modal-body" id="modalBody">
+                
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    BindGrid();
+
+    $("#alertMessage").fadeTo(2000, 500).slideUp(500, function () {
+        $("#alertMessage").slideUp(500);
+    });
+
+    $(document).on("click", "#btnAddNew", function () {
+        location.href = "/Booking/Create";
+    });
+
+    $(document).on("click", "#btnEdit", function () {
+        var specId = $(this).attr("data-id");
+        location.href = "/Booking/Create/" + specId;
+    });
+
+    $(document).on("click", "#btnUpdateDetail", function () {
+        var specId = $(this).attr("data-id");
+        location.href = "/Booking/BookingDetail/" + specId;
+    });
+
+    $(document).on("click", "#btnViewHistory", function (e) {
+        e.preventDefault();
+        var url = $(this).attr("data-url");
+        $.ajax({
+            url: url,
+            type: "Post",
+            data: {},
+            success: function (result) {
+                $("#modalBody").html(result);
+                $("#medicalHistoryModal").modal("show");
+            }
+        });
+    });
+
+    function BindGrid() {
+        var RequestSearch = {
+            Status: $('#ddlStatus option:selected').val(),
+            Search: $("#txtSearch").val(),
+            StrStartDate: $("#txtFromDate").val(),
+            StrEndDate: $("#txtToDate").val()
+        };
+        $("#dataTable").advancedDataTable({
+            url: "/Booking/Fetch",
+            postData: RequestSearch,
+            bindingData: [
+                {
+                    "render": function (data, type, row) {
+                        return "<img alt='profile-img' class='avatar avatar-md brround' src='/Assets/images/ProfilePicture/" + row.Photo + "' />";
+                    },
+                },
+                {
+                    "render": function (data, type, row) {
+                        if (row.Role == "Doctor") {
+                            return "<a id='btnViewHistory' data-url='/Booking/MedicalHistory/" + row.PatientId + "'>" + row.PatientName + "</a>";
+                        }
+                        else {
+                            return row.PatientName;
+                        }
+                        
+                    },
+                },
+                //{ "data": "PatientName" },
+                { "data": "DiseaseName" },
+                { "data": "BookingDate" },
+                { "data": "BookingTime" },
+                //{
+                //    "render": function (data, type, row) {
+                //        return LabelStatus(row.BookingStatus);
+                //    },
+                //},
+                {
+                    "render": function (data, type, row) {
+                        if (row.Role == "Admin" || row.Role == "Receptionist") {
+                            return '<button title="Edit" class="btn btn-sm btn-info" id="btnEdit" data-id="' + row.Id + '"><i class="fa fa-pencil"></i</button>';
+                        }
+                        else if (row.Role == "Doctor Assistance/Nurse") {
+                            return '<button title="Edit" class="btn btn-sm btn-info" id="btnUpdateDetail" data-id="' + row.Id + '"><i class="fa fa-pencil"></i</button>';
+                        }
+                        else if (row.Role == "Doctor") {
+                            return '<button title="Edit" class="btn btn-sm btn-info" id="btnUpdateDetail" data-id="' + row.Id + '"><i class="fa fa-pencil"></i</button>';
+                        }
+                        else if (row.Role == "Patient") {
+                            if (row.BookingStatus == "Pending") {
+                                return '<button title="Edit" class="btn btn-sm btn-info" id="btnEdit" data-id="' + row.Id + '"><i class="fa fa-pencil"></i</button>';
+                            }
+                            else {
+                                return '';
+                            }
+                        }
+                        else {
+                            return '';
+                        }
+                    },
+                    "orderable": false
+                }
+            ],
+        });
+    }
+</script>
+
+
